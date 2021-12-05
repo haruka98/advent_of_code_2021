@@ -1,0 +1,41 @@
+import numpy as np
+
+# get input from file
+input = []
+with open("input.txt") as file:
+    input = file.readlines()
+
+# create initial array of zeros
+array = np.zeros((1000, 1000))
+
+# fill array with values
+for line in input:
+    # get line as list
+    values = [int(line.split(",")[0])]
+    values.append(int(line.split(",")[1].split(" -> ")[0]))
+    values.append(int(line.split(",")[1].split(" -> ")[1]))
+    values.append(int(line.split(",")[2]))
+    # test for horizontal or vertical
+    if values[0] == values[2] or values[1] == values[3]:
+        for i in range(min(values[0], values[2]), max(values[0], values[2]) + 1):
+            for j in range(min(values[1], values[3]), max(values[1], values[3]) + 1):
+                array[i][j] = int(array[i][j]) + 1
+    # test for diagonal lines
+    elif values[0] < values[2] and values[1] < values[3] or values[0] > values[2] and values[1] > values[3]:
+        for i in range(min(values[0], values[2]), max(values[0], values[2]) + 1):
+            j = min(values[1], values[3]) + (i - min(values[0], values[2]))
+            array[i][j] = int(array[i][j]) + 1
+    else:
+        for i in range(min(values[0], values[2]), max(values[0], values[2]) + 1):
+            j = max(values[1], values[3]) - (i - min(values[0], values[2]))
+            array[i][j] = int(array[i][j]) + 1
+
+# count values greater 1
+counter = 0
+for i in range(0, 1000):
+    for j in range(0, 1000):
+        if array[i][j] > 1:
+            counter += 1
+
+# output result
+print(counter)
