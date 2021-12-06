@@ -1,4 +1,5 @@
 import numpy as np
+import re
 
 # get input from file
 input = []
@@ -11,10 +12,7 @@ array = np.zeros((1000, 1000))
 # fill array with values
 for line in input:
     # get line as list
-    values = [int(line.split(",")[0])]
-    values.append(int(line.split(",")[1].split(" -> ")[0]))
-    values.append(int(line.split(",")[1].split(" -> ")[1]))
-    values.append(int(line.split(",")[2]))
+    values = list(map(int, re.split(r",| -> ", line)))
     # test for horizontal or vertical
     if values[0] == values[2] or values[1] == values[3]:
         for i in range(min(values[0], values[2]), max(values[0], values[2]) + 1):
